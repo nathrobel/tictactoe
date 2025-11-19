@@ -92,6 +92,12 @@ def new_game():
             buttons[row][column].config(text ="",highlightbackground="#F0F0F0", highlightthickness=0 )
 
 
+def end_game():
+    '''Close the window'''
+    window.destroy()
+
+
+
 
 
 window = Tk()
@@ -141,7 +147,9 @@ label = Label(game_frame,text = player + " turn", font = ('consolas',40))
 label.pack(side = "top")
 
 reset_button = Button(game_frame, text = "Restart", font = ('consolas',20),command = new_game)
+end_game_button = Button(game_frame, text = "End Game", font = ('consolas',20),command = end_game)
 reset_button.pack(side = "top")
+end_game_button.pack(side = "top")
 
 
 
