@@ -2,17 +2,42 @@ from tkinter import *
 import random
 
 
-def next_game():
-    pass
+def next_turn(row,column):
+    '''Handle a player's move: place symbol, check winner/tie, and switch turns'''
+    global player
+    if buttons[row][column]['text'] == '' and check_winner() is False:
+        if player == players[0]:
+            buttons[row][column]["text"] = player
+            if check_winner() is False:
+                # if there is no winner swap players
+                player = players[1]
+                label.config(text = (players[1] + " turn"))
+            elif check_winner() is True:
+                label.config(text = (players[0] + " wins"))
+            elif check_winner()  == "Tie":
+                label.config(text = ("Tie!"))
+        else:
+            buttons[row][column]["text"] = player
+            if check_winner() is False:
+                # if there is no winner swap players
+                player = players[0]
+                label.config(text = (players[0] + " turn"))
+            elif check_winner() is True:
+                label.config(text = (players[1] + " wins"))
+            elif check_winner()  == "Tie":
+                label.config(text = ("Tie!"))
 
 
 def check_win():
+    '''Return True if someone wins, 'Tie' for draw, or False if game continues'''
     pass
 
 def empty_spaces():
+    '''Check if the board has empty spaces'''
     pass
 
 def new_game():
+    '''Reset the board and start a new game'''
     pass
 
 
@@ -36,8 +61,9 @@ frame.pack()
 
 for row in range(3):
     for column in range(3):
-        buttons[row][column] = Button(frame,text = "",  font = ('consolas',40),width = 5,height = 2, command = lambda row=row, column= column: next_turn(row,column))
-        buttons[row][column].grid(row=row,column=column)
+        buttons[row][column]= Button(frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column)  )
+        buttons[row][column].grid(row=row,column = column)
+
 
 
 window.mainloop()
