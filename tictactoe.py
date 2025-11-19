@@ -28,9 +28,26 @@ def next_turn(row,column):
                 label.config(text = ("Tie!"))
 
 
-def check_win():
+def check_winner():
     '''Return True if someone wins, 'Tie' for draw, or False if game continues'''
-    pass
+    for row in range(3):
+            if buttons[row][0]['text'] == buttons[row][1]['text'] == buttons[row][2]['text'] != "":
+                return True
+            
+    for column in range(3):
+            if buttons[0][column]['text'] == buttons[1][column]['text'] == buttons[2][column]['text'] != "":
+                return True
+    if buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
+        return True
+    elif buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
+        return True
+    elif empty_spaces() is False:
+        return "Tie"
+
+    else:
+        return False
+
+    
 
 def empty_spaces():
     '''Check if the board has empty spaces'''
