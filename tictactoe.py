@@ -64,8 +64,8 @@ def check_winner():
 
     
 
-def empty_spaces():
-    '''Check if the board has empty spaces'''
+def empty_spaces(): 
+    '''Check if the board has empty spaces.'''
     num_spaces = 9
 
     for row in range(3):
@@ -92,28 +92,66 @@ def new_game():
             buttons[row][column].config(text ="",highlightbackground="#F0F0F0")
 
 
+
+
+window = Tk()
+window.title("Tic Tac Toe")
+
+start_frame = Frame(window)
+game_frame = Frame(window)
+
+start_frame.pack()
+
+
 players = ["x","o"]
-
 player = random.choice(players)
-
 buttons = [[0,0,0],
            [0,0,0],
            [0,0,0]]
 
-window = Tk()
-label = Label(text = player + " turn", font = ('consolas',40))
+def show_game_screen(mode):
+    start_frame.pack_forget()
+    game_frame.pack()
+    new_game()
+
+
+welcome_label = Label(start_frame, text="Welcome to Tic Tac Toe!", font=("consolas", 40))
+welcome_label.pack(pady=40)
+
+multiplayer_btn = Button(
+    start_frame,
+    text="Multiplayer",
+    font=("consolas", 30),
+    command=lambda: show_game_screen("multiplayer")
+)
+multiplayer_btn.pack(pady=20)
+
+computer_btn = Button(
+    start_frame,
+    text="Vs Computer (coming soon)",
+    font=("consolas", 20),
+    state=DISABLED
+)
+computer_btn.pack(pady=10)
+
+
+
+
+label = Label(game_frame,text = player + " turn", font = ('consolas',40))
 label.pack(side = "top")
 
-reset_button = Button(text = "Restart", font = ('consolas',20),command = new_game)
+reset_button = Button(game_frame, text = "Restart", font = ('consolas',20),command = new_game)
 reset_button.pack(side = "top")
 
-frame = Frame(window)
-frame.pack()
 
+
+frame = Frame(game_frame)
+frame.pack()
 for row in range(3):
     for column in range(3):
         buttons[row][column]= Button(frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column))
         buttons[row][column].grid(row=row,column = column)
+
 
 
 
