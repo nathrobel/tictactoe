@@ -29,7 +29,7 @@ def next_turn(row,column):
 
 
 def check_winner():
-    '''Return True if someone wins, 'Tie' for draw, or False if game continues'''
+    '''Return True if someone wins, Tie for draw, or False if game continues'''
     for row in range(3):
             if buttons[row][0]['text'] == buttons[row][1]['text'] == buttons[row][2]['text'] != "":
                 return True
@@ -39,9 +39,9 @@ def check_winner():
                 return True
     if buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
         return True
-    elif buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
+    if buttons[0][2]['text'] == buttons[1][1]['text'] == buttons[2][0]['text'] != "":
         return True
-    elif empty_spaces() is False:
+    if empty_spaces() is False:
         return "Tie"
 
     else:
@@ -51,7 +51,17 @@ def check_winner():
 
 def empty_spaces():
     '''Check if the board has empty spaces'''
-    pass
+    num_spaces = 9
+
+    for row in range(3):
+        for column in range(3):
+            if buttons[row][column]['text'] != "":
+                num_spaces -=1
+    if num_spaces == 0:
+        return False
+    else:
+        return True
+
 
 def new_game():
     '''Reset the board and start a new game'''
