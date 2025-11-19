@@ -89,7 +89,7 @@ def new_game():
 
     for row in range(3):
         for column in range(3):
-            buttons[row][column].config(text ="",highlightbackground="#F0F0F0")
+            buttons[row][column].config(text ="",highlightbackground="#F0F0F0", highlightthickness=0 )
 
 
 
@@ -151,7 +151,6 @@ for row in range(3):
     for column in range(3):
         buttons[row][column]= Button(frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column))
         buttons[row][column].grid(row=row,column = column)
-
 
 
 
