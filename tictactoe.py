@@ -32,16 +32,31 @@ def check_winner():
     '''Return True if someone wins, Tie for draw, or False if game continues'''
     for row in range(3):
             if buttons[row][0]['text'] == buttons[row][1]['text'] == buttons[row][2]['text'] != "":
+                buttons[row][0].config(highlightbackground = "green", highlightthickness=5)
+                buttons[row][1].config(highlightbackground = "green", highlightthickness=5)
+                buttons[row][2].config(highlightbackground = "green", highlightthickness=5)
                 return True
             
     for column in range(3):
             if buttons[0][column]['text'] == buttons[1][column]['text'] == buttons[2][column]['text'] != "":
+                buttons[0][column].config(highlightbackground = "green", highlightthickness=5)
+                buttons[1][column].config(highlightbackground = "green", highlightthickness=5)
+                buttons[2][column].config(highlightbackground = "green", highlightthickness=5)
                 return True
     if buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
+        buttons[0][0].config(highlightbackground = "green", highlightthickness=5)
+        buttons[1][1].config(highlightbackground = "green", highlightthickness=5)
+        buttons[2][2].config(highlightbackground = "green", highlightthickness=5)
         return True
     if buttons[0][2]['text'] == buttons[1][1]['text'] == buttons[2][0]['text'] != "":
+        buttons[0][2].config(highlightbackground = "green", highlightthickness=5)
+        buttons[1][1].config(highlightbackground = "green", highlightthickness=5)
+        buttons[2][0].config(highlightbackground = "green", highlightthickness=5)
         return True
     if empty_spaces() is False:
+        for row in range(3):
+            for column in range(3):
+                buttons[row][column].config(highlightbackground = "yellow", highlightthickness=5)
         return "Tie"
 
     else:
@@ -74,7 +89,7 @@ def new_game():
 
     for row in range(3):
         for column in range(3):
-            buttons[row][column].config(text ="",bg="#F0F0F0")
+            buttons[row][column].config(text ="",highlightbackground="#F0F0F0")
 
 
 players = ["x","o"]
@@ -97,7 +112,7 @@ frame.pack()
 
 for row in range(3):
     for column in range(3):
-        buttons[row][column]= Button(frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column)  )
+        buttons[row][column]= Button(frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column))
         buttons[row][column].grid(row=row,column = column)
 
 
