@@ -3,7 +3,7 @@ import random
 
 
 def next_turn(row,column):
-    '''Handle a player's move: place symbol, check winner/tie, and switch turns'''
+    '''Handle a player's move: place x/o, check winner/tie, and switch turns'''
     global player
     if buttons[row][column]['text'] == '' and check_winner() is False:
         if player == players[0]:
@@ -96,15 +96,28 @@ def end_game():
     '''Close the window'''
     window.destroy()
 
+def show_game_screen(mode):
+    start_frame.pack_forget()
+    if mode.lower() == "singleplayer":
+         sp_game_frame.pack()
+    elif mode.lower() == "multiplayer":
+        mp_game_frame.pack()
+    new_game()
 
 
-
+# need some level functionality vs AI
+# Level 1 is basic AI with basic heuristics
+# if user wants to move to next level unlock level 2 button so they can progress they can restart on same level if they want
+# Level 2 with A* search
+# if user wants to move to next level unlock level 3 button so they can progress they can restart on same level if they want
+# Level 3 with minmax alpha beta pruning
 
 window = Tk()
 window.title("Tic Tac Toe")
 
 start_frame = Frame(window)
-game_frame = Frame(window)
+sp_game_frame = Frame(window)
+mp_game_frame = Frame(window)
 
 start_frame.pack()
 
@@ -114,12 +127,6 @@ player = random.choice(players)
 buttons = [[0,0,0],
            [0,0,0],
            [0,0,0]]
-
-def show_game_screen(mode):
-    start_frame.pack_forget()
-    game_frame.pack()
-    new_game()
-
 
 welcome_label = Label(start_frame, text="Welcome to Tic Tac Toe!", font=("consolas", 40))
 welcome_label.pack(pady=40)
@@ -136,29 +143,40 @@ computer_btn = Button(
     start_frame,
     text="Vs Computer (coming soon)",
     font=("consolas", 20),
-    state=DISABLED
+    command=lambda: show_game_screen("singleplayer")
+    
 )
 computer_btn.pack(pady=10)
 
 
 
-
-label = Label(game_frame,text = player + " turn", font = ('consolas',40))
+# Multiplayer game frame 
+label = Label(mp_game_frame,text = player + " turn", font = ('consolas',40))
 label.pack(side = "top")
 
-reset_button = Button(game_frame, text = "Restart", font = ('consolas',20),command = new_game)
-end_game_button = Button(game_frame, text = "End Game", font = ('consolas',20),command = end_game)
-reset_button.pack(side = "top")
-end_game_button.pack(side = "top")
+mp_reset_button = Button(mp_game_frame, text = "Restart", font = ('consolas',20),command = new_game)
+mp_end_game_button = Button(mp_game_frame, text = "End Game", font = ('consolas',20),command = end_game)
+mp_reset_button.pack(side = "top")
+mp_end_game_button.pack(side = "top")
 
 
 
-frame = Frame(game_frame)
-frame.pack()
+board_frame = Frame(mp_game_frame)
+board_frame.pack()
 for row in range(3):
     for column in range(3):
-        buttons[row][column]= Button(frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column))
+        buttons[row][column]= Button(board_frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column))
         buttons[row][column].grid(row=row,column = column)
+
+
+# Singleplayer game frame 
+sp_label = Label(sp_game_frame,text = "vs Computer mode coming soon", font = ('consolas',40))
+sp_label.pack(side = "top")
+
+sp_reset_button = Button(sp_game_frame, text = "Restart", font = ('consolas',20),command = new_game)
+sp_end_game_button = Button(sp_game_frame, text = "End Game", font = ('consolas',20),command = end_game)
+sp_reset_button.pack(side = "top")
+sp_end_game_button.pack(side = "top")
 
 
 
