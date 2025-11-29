@@ -2,30 +2,34 @@ from tkinter import *
 import random
 
 
-def next_turn(row,column):
+def next_turn(row,column,mode):
     '''Handle a player's move: place x/o, check winner/tie, and switch turns'''
     global player
-    if buttons[row][column]['text'] == '' and check_winner() is False:
-        if player == players[0]:
-            buttons[row][column]["text"] = player
-            if check_winner() is False:
-                # if there is no winner swap players
-                player = players[1]
-                label.config(text = (players[1] + " turn"))
-            elif check_winner() is True:
-                label.config(text = (players[0] + " wins"))
-            elif check_winner()  == "Tie":
-                label.config(text = ("Tie!"))
-        else:
-            buttons[row][column]["text"] = player
-            if check_winner() is False:
-                # if there is no winner swap players
-                player = players[0]
-                label.config(text = (players[0] + " turn"))
-            elif check_winner() is True:
-                label.config(text = (players[1] + " wins"))
-            elif check_winner()  == "Tie":
-                label.config(text = ("Tie!"))
+    if mode == "multiplayer":
+        if buttons[row][column]['text'] == '' and check_winner() is False:
+            if player == players[0]:
+                buttons[row][column]["text"] = player
+                if check_winner() is False:
+                    # if there is no winner swap players
+                    player = players[1]
+                    label.config(text = (players[1] + " turn"))
+                elif check_winner() is True:
+                    label.config(text = (players[0] + " wins"))
+                elif check_winner()  == "Tie":
+                    label.config(text = ("Tie!"))
+            else:
+                buttons[row][column]["text"] = player
+                if check_winner() is False:
+                    # if there is no winner swap players
+                    player = players[0]
+                    label.config(text = (players[0] + " turn"))
+                elif check_winner() is True:
+                    label.config(text = (players[1] + " wins"))
+                elif check_winner()  == "Tie":
+                    label.config(text = ("Tie!"))
+
+    elif mode =="singleplayer":
+        pass
 
 
 def check_winner():
@@ -128,6 +132,12 @@ buttons = [[0,0,0],
            [0,0,0],
            [0,0,0]]
 
+
+# seperate grid logic for singleplayer
+buttons_sp = [[0,0,0],
+             [0,0,0],
+             [0,0,0]]
+
 welcome_label = Label(start_frame, text="Welcome to Tic Tac Toe!", font=("consolas", 40))
 welcome_label.pack(pady=40)
 
@@ -165,20 +175,24 @@ board_frame = Frame(mp_game_frame)
 board_frame.pack()
 for row in range(3):
     for column in range(3):
-        buttons[row][column]= Button(board_frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column))
+        buttons[row][column]= Button(board_frame,text = "", font = ('consolas',40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column,"multiplayer"))
         buttons[row][column].grid(row=row,column = column)
-
 
 # Singleplayer game frame 
 sp_label = Label(sp_game_frame,text = "vs Computer mode coming soon", font = ('consolas',40))
 sp_label.pack(side = "top")
 
-sp_reset_button = Button(sp_game_frame, text = "Restart", font = ('consolas',20),command = new_game)
-sp_end_game_button = Button(sp_game_frame, text = "End Game", font = ('consolas',20),command = end_game)
+sp_reset_button = Button(sp_game_frame, text = "Restart", font = ('consolas', 20),command = new_game)
+sp_end_game_button = Button(sp_game_frame, text = "End Game", font = ('consolas', 20),command = end_game)
 sp_reset_button.pack(side = "top")
 sp_end_game_button.pack(side = "top")
 
-
+board_frame_sp = Frame(sp_game_frame)
+board_frame_sp.pack()
+'''for row in range(3):
+    for column in range(3):
+        buttons_sp[row][column]= Button(board_frame_sp,text = "", font = ('consolas', 40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column,"singleplayer"))
+        buttons_sp[row][column].grid(row=row,column = column)'''
 
 window.mainloop()
 
