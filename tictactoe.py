@@ -5,62 +5,66 @@ import random
 def next_turn(row,column,mode):
     '''Handle a player's move: place x/o, check winner/tie, and switch turns'''
     global player
+
+
     if mode == "multiplayer":
-        if buttons[row][column]['text'] == '' and check_winner() is False:
-            if player == players[0]:
-                buttons[row][column]["text"] = player
-                if check_winner() is False:
-                    # if there is no winner swap players
-                    player = players[1]
-                    label.config(text = (players[1] + " turn"))
-                elif check_winner() is True:
-                    label.config(text = (players[0] + " wins"))
-                elif check_winner()  == "Tie":
-                    label.config(text = ("Tie!"))
-            else:
-                buttons[row][column]["text"] = player
-                if check_winner() is False:
-                    # if there is no winner swap players
-                    player = players[0]
-                    label.config(text = (players[0] + " turn"))
-                elif check_winner() is True:
-                    label.config(text = (players[1] + " wins"))
-                elif check_winner()  == "Tie":
-                    label.config(text = ("Tie!"))
+        grid = buttons
+        current_label = label
+    else:
+        grid = buttons_sp
+        current_label = sp_label
 
-    elif mode =="singleplayer":
-        pass
+    if grid[row][column]['text'] == '' and check_winner(grid) is False:
+        if player == players[0]:
+            grid[row][column]["text"] = player
+            if check_winner(grid) is False:
+                # if there is no winner swap players
+                player = players[1]
+                current_label.config(text = (players[1] + " turn"))
+            elif check_winner(grid) is True:
+                current_label.config(text = (players[0] + " wins"))
+            elif check_winner(grid)  == "Tie":
+                current_label.config(text = ("Tie!"))
+        else:
+            grid[row][column]["text"] = player
+            if check_winner(grid) is False:
+                # if there is no winner swap players
+                player = players[0]
+                current_label.config(text = (players[0] + " turn"))
+            elif check_winner(grid) is True:
+                current_label.config(text = (players[1] + " wins"))
+            elif check_winner(grid)  == "Tie":
+                current_label.config(text = ("Tie!"))
 
-
-def check_winner():
+def check_winner(grid):
     '''Return True if someone wins, Tie for draw, or False if game continues'''
     for row in range(3):
-            if buttons[row][0]['text'] == buttons[row][1]['text'] == buttons[row][2]['text'] != "":
-                buttons[row][0].config(highlightbackground = "green", highlightthickness=5)
-                buttons[row][1].config(highlightbackground = "green", highlightthickness=5)
-                buttons[row][2].config(highlightbackground = "green", highlightthickness=5)
+            if grid[row][0]['text'] == grid[row][1]['text'] == grid[row][2]['text'] != "":
+                grid[row][0].config(highlightbackground = "green", highlightthickness=5)
+                grid[row][1].config(highlightbackground = "green", highlightthickness=5)
+                grid[row][2].config(highlightbackground = "green", highlightthickness=5)
                 return True
             
     for column in range(3):
-            if buttons[0][column]['text'] == buttons[1][column]['text'] == buttons[2][column]['text'] != "":
-                buttons[0][column].config(highlightbackground = "green", highlightthickness=5)
-                buttons[1][column].config(highlightbackground = "green", highlightthickness=5)
-                buttons[2][column].config(highlightbackground = "green", highlightthickness=5)
+            if grid[0][column]['text'] == grid[1][column]['text'] == grid[2][column]['text'] != "":
+                grid[0][column].config(highlightbackground = "green", highlightthickness=5)
+                grid[1][column].config(highlightbackground = "green", highlightthickness=5)
+                grid[2][column].config(highlightbackground = "green", highlightthickness=5)
                 return True
-    if buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
-        buttons[0][0].config(highlightbackground = "green", highlightthickness=5)
-        buttons[1][1].config(highlightbackground = "green", highlightthickness=5)
-        buttons[2][2].config(highlightbackground = "green", highlightthickness=5)
+    if grid[0][0]['text'] == grid[1][1]['text'] == grid[2][2]['text'] != "":
+        grid[0][0].config(highlightbackground = "green", highlightthickness=5)
+        grid[1][1].config(highlightbackground = "green", highlightthickness=5)
+        grid[2][2].config(highlightbackground = "green", highlightthickness=5)
         return True
-    if buttons[0][2]['text'] == buttons[1][1]['text'] == buttons[2][0]['text'] != "":
-        buttons[0][2].config(highlightbackground = "green", highlightthickness=5)
-        buttons[1][1].config(highlightbackground = "green", highlightthickness=5)
-        buttons[2][0].config(highlightbackground = "green", highlightthickness=5)
+    if grid [0][2]['text'] == grid[1][1]['text'] == grid[2][0]['text'] != "":
+        grid[0][2].config(highlightbackground = "green", highlightthickness=5)
+        grid[1][1].config(highlightbackground = "green", highlightthickness=5)
+        grid[2][0].config(highlightbackground = "green", highlightthickness=5)
         return True
-    if empty_spaces() is False:
+    if empty_spaces(grid) is False:
         for row in range(3):
             for column in range(3):
-                buttons[row][column].config(highlightbackground = "yellow", highlightthickness=5)
+                grid[row][column].config(highlightbackground = "yellow", highlightthickness=5)
         return "Tie"
 
     else:
@@ -68,13 +72,13 @@ def check_winner():
 
     
 
-def empty_spaces(): 
+def empty_spaces(grid): 
     '''Check if the board has empty spaces.'''
     num_spaces = 9
 
     for row in range(3):
         for column in range(3):
-            if buttons[row][column]['text'] != "":
+            if grid[row][column]['text'] != "":
                 num_spaces -=1
     if num_spaces == 0:
         return False
@@ -82,18 +86,18 @@ def empty_spaces():
         return True
 
 
-def new_game():
+def new_game(grid,current_label):
     '''Reset the board and start a new game'''
     global player
 
     player = random.choice(players)
 
-    label.config(text = player + " turn")
+    current_label.config(text = player + " turn")
 
 
     for row in range(3):
         for column in range(3):
-            buttons[row][column].config(text ="",highlightbackground="#F0F0F0", highlightthickness=0 )
+            grid[row][column].config(text ="",highlightbackground="#F0F0F0", highlightthickness=0 )
 
 
 def end_game():
@@ -103,10 +107,11 @@ def end_game():
 def show_game_screen(mode):
     start_frame.pack_forget()
     if mode.lower() == "singleplayer":
-         sp_game_frame.pack()
+        sp_game_frame.pack()
+        new_game(buttons_sp,sp_label)
     elif mode.lower() == "multiplayer":
         mp_game_frame.pack()
-    new_game()
+        new_game(buttons,label)
 
 
 # need some level functionality vs AI
@@ -164,7 +169,7 @@ computer_btn.pack(pady=10)
 label = Label(mp_game_frame,text = player + " turn", font = ('consolas',40))
 label.pack(side = "top")
 
-mp_reset_button = Button(mp_game_frame, text = "Restart", font = ('consolas',20),command = new_game)
+mp_reset_button = Button(mp_game_frame, text = "Restart", font = ('consolas',20),command = lambda: new_game(buttons,label))
 mp_end_game_button = Button(mp_game_frame, text = "End Game", font = ('consolas',20),command = end_game)
 mp_reset_button.pack(side = "top")
 mp_end_game_button.pack(side = "top")
@@ -182,14 +187,14 @@ for row in range(3):
 sp_label = Label(sp_game_frame,text = "vs Computer mode coming soon", font = ('consolas',40))
 sp_label.pack(side = "top")
 
-sp_reset_button = Button(sp_game_frame, text = "Restart", font = ('consolas', 20),command = new_game)
+sp_reset_button = Button(sp_game_frame, text = "Restart", font = ('consolas', 20),command = lambda: new_game(buttons_sp,sp_label))
 sp_end_game_button = Button(sp_game_frame, text = "End Game", font = ('consolas', 20),command = end_game)
 sp_reset_button.pack(side = "top")
 sp_end_game_button.pack(side = "top")
 
-board_frame_sp = Frame(sp_game_frame)
+'''board_frame_sp = Frame(sp_game_frame)
 board_frame_sp.pack()
-'''for row in range(3):
+for row in range(3):
     for column in range(3):
         buttons_sp[row][column]= Button(board_frame_sp,text = "", font = ('consolas', 40), width = 5, height = 2, command = lambda row = row, column = column: next_turn(row,column,"singleplayer"))
         buttons_sp[row][column].grid(row=row,column = column)'''
